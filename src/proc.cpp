@@ -196,9 +196,9 @@ void Proc::readLoad( unsigned long& in, unsigned long& out )
 				break;
 			}
 		}
+		
+		fclose(fd);
 	} while( 0 );
-
-	fclose(fd);
 	
 #endif
 // === End Linux specific network data reading code ===
