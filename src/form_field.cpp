@@ -18,6 +18,8 @@
 #include "form_field.h"
 #include "window.h"
 
+#include <string.h>
+
 Field::Field( int x, int y, int width, int height ) : m_field(0)
 {
 	m_field = new_field( height, width, y, x, 0, 0 );
@@ -30,7 +32,13 @@ Field::~Field()
 
 void Field::setBuffer( const char* new_buffer )
 {
-	set_field_buffer( m_field, 0, new_buffer );
+	unsigned int bufferLen = strlen(new_buffer) + 1;
+	char* bufferCopy = (char*) malloc(bufferLen);
+	strcpy(bufferCopy, new_buffer);
+
+	set_field_buffer(m_field, 0, bufferCopy);
+
+	free(bufferCopy);
 }
 
 const char* Field::buffer()

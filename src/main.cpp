@@ -39,7 +39,6 @@
 #endif
 #include <ctype.h>
 #include <time.h>
-#include <curses.h>
 #include <signal.h>
 #include <string>
 #include <vector>

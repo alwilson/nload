@@ -16,6 +16,8 @@
  ***************************************************************************/
 
 #include "screen.h"
+
+#define NOMACROS
 #include <curses.h>
 
 int Screen::width()

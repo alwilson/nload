@@ -18,7 +18,6 @@
 #ifndef STATUS_H
 #define STATUS_H
 
-#include <curses.h>
 #include <limits.h>
 #include <math.h>
 #include <string>

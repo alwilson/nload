@@ -18,6 +18,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#define NOMACROS
 #include <curses.h>
 
 class Form;

@@ -18,6 +18,7 @@
 #ifndef FORM_FIELD_H
 #define FORM_FIELD_H
 
+#define NOMACROS
 #include <curses.h>
 #include <form.h>
 #include <vector>

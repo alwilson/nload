@@ -18,7 +18,6 @@
 #ifndef DEV_H
 #define DEV_H
 
-#include <curses.h>
 #include <config.h>
 #include "proc.h"
 #include "status.h"
