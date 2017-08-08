@@ -2,7 +2,7 @@
                                   graph.h
                              -------------------
     begin                : Sat Sep 29 2001
-    copyright            : (C) 2001 - 2003 by Roland Riegel
+    copyright            : (C) 2001 - 2008 by Roland Riegel
     email                : feedback@roland-riegel.de
  ***************************************************************************/
 
@@ -19,36 +19,27 @@
 #define GRAPH_H
 
 #include <list>
-using std::list;
 
 class Window;
-class OptionLong;
-
-const long STANDARD_MAX_DEFLECTION = 10240; // [kBit/s]  10 MBit/s = 10240 kBit/s
 
 class Graph
 {
+    public:
+        Graph();
+        ~Graph();
+        
+        void setNumOfBars(unsigned int numOfBars);
+        void setHeightOfBars(unsigned int heightOfBars);
+        void setMaxDeflection(long long maxDeflection);
+        
+        void update(long long value);
+        void print(Window& window, int x, int y);
+        void resetTrafficData();
 
-public:
-	Graph();
-	~Graph();
-	
-	void setNumOfBars( int );
-	void setHeightOfBars( int );
-	void setTrafficWithMaxDeflectionOfBars( OptionLong* );
-	
-	void update( int );
-	void print( Window&, int, int );
-	void resetTrafficData();
-
-private:
-	long trafficWithMaxDeflectionOfBars();
-	
-	int m_heightofbars;
-	OptionLong* m_trafficwithmaxdeflectionofbars;
-	
-	list<int> m_values;
-	
+    private:
+        unsigned int m_heightOfBars;
+        long long m_maxDeflection;
+        std::list<long long> m_values;
 };
 
 #endif

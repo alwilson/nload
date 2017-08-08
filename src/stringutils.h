@@ -1,8 +1,8 @@
 /***************************************************************************
-                                   main.h
+                                stringutils.h
                              -------------------
-    begin                : Wed Jul 25 2001
-    copyright            : (C) 2001 - 2008 by Roland Riegel
+    begin                : Tue Nov 06 2007
+    copyright            : (C) 2007 - 2008 by Roland Riegel
     email                : feedback@roland-riegel.de
  ***************************************************************************/
 
@@ -15,20 +15,35 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef STRINGUTILS_H
+#define STRINGUTILS_H
 
-#include "traffic_window.h"
-#include "opt_window.h"
+#include <sstream>
+#include <string>
+#include <vector>
 
-int main(int argc, char *argv[]);
+std::string trim(const std::string& s);
+std::vector<std::string> split(const std::string& s, const std::string& separators);
+std::vector<std::string> splitQuoted(const std::string& s, const std::string& separators, const std::string& quotes = "\"");
 
-void init();
-void finish();
-void end(int signal = 0);
-void terminalResized(int signal);
+template<class T>
+std::string toString(const T& t)
+{
+    std::ostringstream stream;
+    stream << t;
 
-void printHelp(bool error);
+    return stream.str();
+}
+
+template<class T>
+T fromString(const std::string& s)
+{
+    std::istringstream stream(s);
+    T t = T();
+    stream >> t;
+
+    return t;
+}
 
 #endif
 

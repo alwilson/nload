@@ -1,8 +1,8 @@
 /***************************************************************************
-                                   main.h
+                               settingstore.h
                              -------------------
-    begin                : Wed Jul 25 2001
-    copyright            : (C) 2001 - 2008 by Roland Riegel
+    begin                : Tue Nov 06 2007
+    copyright            : (C) 2007 - 2008 by Roland Riegel
     email                : feedback@roland-riegel.de
  ***************************************************************************/
 
@@ -15,20 +15,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef SETTINGSTORE_H
+#define SETTINGSTORE_H
 
-#include "traffic_window.h"
-#include "opt_window.h"
+#include <map>
+#include <string>
 
-int main(int argc, char *argv[]);
+class Setting;
 
-void init();
-void finish();
-void end(int signal = 0);
-void terminalResized(int signal);
+class SettingStore
+{
+    public:
+        static Setting& get(const std::string& key);
+        static void add(const Setting& setting);
+        static void remove(const std::string& key);
+        static bool exists(const std::string& key);
 
-void printHelp(bool error);
+        static std::map<std::string, Setting>& getAll();
+
+        static bool readFromFile(const std::string& file);
+        static bool writeToFile(const std::string& file);
+
+    private:
+        static std::map<std::string, Setting> m_settings;
+};
 
 #endif
 

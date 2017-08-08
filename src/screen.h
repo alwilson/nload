@@ -2,7 +2,7 @@
                                   screen.h
                              -------------------
     begin                : Thu Jul 04 2002
-    copyright            : (C) 2002 - 2003 by Roland Riegel
+    copyright            : (C) 2002 - 2008 by Roland Riegel
     email                : feedback@roland-riegel.de
  ***************************************************************************/
 
@@ -20,14 +20,13 @@
 
 class Screen
 {
-public:
-	
-	static int width();
-	static int height();
-	
-	static int x();
-	static int y();
-	
+    public:
+        static int width();
+        static int height();
+        
+        static int x();
+        static int y();
 };
 
 #endif
+

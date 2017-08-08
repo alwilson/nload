@@ -1,8 +1,8 @@
 /***************************************************************************
-                                   main.h
+                             devreader-solaris.h
                              -------------------
-    begin                : Wed Jul 25 2001
-    copyright            : (C) 2001 - 2008 by Roland Riegel
+    begin                : Fri Nov 16 2007
+    copyright            : (C) 2007 - 2008 by Roland Riegel
     email                : feedback@roland-riegel.de
  ***************************************************************************/
 
@@ -15,20 +15,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef DEVREADER_SOLARIS_H
+#define DEVREADER_SOLARIS_H
 
-#include "traffic_window.h"
-#include "opt_window.h"
+#include "devreader.h"
 
-int main(int argc, char *argv[]);
+#include <string>
+#include <list>
 
-void init();
-void finish();
-void end(int signal = 0);
-void terminalResized(int signal);
+class DevReaderSolaris : public DevReader
+{
+    public:
+        DevReaderSolaris(const std::string& deviceName);
+        virtual ~DevReaderSolaris();
 
-void printHelp(bool error);
+        static std::list<std::string> findAllDevices();
+
+    protected:
+        void readFromDevice(DataFrame& dataFrame);
+};
 
 #endif
 

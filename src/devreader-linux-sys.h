@@ -1,8 +1,8 @@
 /***************************************************************************
-                                   main.h
-                             -------------------
-    begin                : Wed Jul 25 2001
-    copyright            : (C) 2001 - 2008 by Roland Riegel
+                             devreader-linux-sys.h
+                             ---------------------
+    begin                : Fri Nov 16 2007
+    copyright            : (C) 2007 - 2008 by Roland Riegel
     email                : feedback@roland-riegel.de
  ***************************************************************************/
 
@@ -15,20 +15,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef DEVREADER_LINUX_SYS_H
+#define DEVREADER_LINUX_SYS_H
 
-#include "traffic_window.h"
-#include "opt_window.h"
+#include "devreader.h"
 
-int main(int argc, char *argv[]);
+#include <string>
+#include <list>
 
-void init();
-void finish();
-void end(int signal = 0);
-void terminalResized(int signal);
+class DevReaderLinuxSys : public DevReader
+{
+    public:
+        DevReaderLinuxSys(const std::string& deviceName);
+        virtual ~DevReaderLinuxSys();
 
-void printHelp(bool error);
+        static bool isAvailable();
+        static std::list<std::string> findAllDevices();
+        
+    protected:
+        void readFromDevice(DataFrame& dataFrame);
+
+    private:
+        unsigned long readULongSysEntry(const std::string& entry);
+};
 
 #endif
 

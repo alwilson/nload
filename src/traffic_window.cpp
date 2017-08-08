@@ -2,7 +2,7 @@
                              traffic_window.cpp
                              -------------------
     begin                : Thu Jul 04 2002
-    copyright            : (C) 2002 - 2003 by Roland Riegel
+    copyright            : (C) 2002 - 2008 by Roland Riegel
     email                : feedback@roland-riegel.de
  ***************************************************************************/
 
@@ -15,12 +15,15 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "device.h"
+#include "setting.h"
+#include "settingstore.h"
 #include "traffic_window.h"
-#include "dev.h"
-#include "options.h"
+
+using namespace std;
 
 TrafficWindow::TrafficWindow()
-    : Window(), m_cur_dev(0), m_show_multiple_devices( 0 )
+    : Window(), m_curDev(0)
 {
 }
 
@@ -28,70 +31,55 @@ TrafficWindow::~TrafficWindow()
 {
 }
 
-void TrafficWindow::setDevices( vector<Dev *>& new_devs )
+void TrafficWindow::processKey(int key)
 {
-	m_devs = new_devs;
+    switch(key)
+    {
+        case KEY_RIGHT:
+        case KEY_DOWN:
+        case KEY_NPAGE:
+        case KEY_ENTER:
+        case '\n':
+        case '\t':
+        case '\015':
+            m_curDev += showMultipleDevices() ? getHeight() / 9 : 1;
+            break;
+        case KEY_LEFT:
+        case KEY_UP:
+        case KEY_PPAGE:
+            m_curDev -= showMultipleDevices() ? getHeight() / 9 : 1;
+            break;
+    }
 }
 
-vector<Dev *>& TrafficWindow::devices()
+void TrafficWindow::printTraffic(const vector<Device*>& devices)
 {
-	return m_devs;
-}
+    if((unsigned int) m_curDev >= devices.size() || m_curDev < 0)
+        m_curDev = 0;
 
-void TrafficWindow::processKey( int key )
-{
-	switch( key )
-	{
-		case KEY_RIGHT:
-		case KEY_DOWN:
-		case KEY_NPAGE:
-		case KEY_ENTER:
-		case 'n':
-		case '\n':
-		case '\t':
-		case '\015':
-			m_cur_dev += showMultipleDevices() ? height() / 9 : 1;
-			if( (unsigned int) m_cur_dev >= m_devs.size() )
-				m_cur_dev = 0;
-			break;
-		case KEY_LEFT:
-		case KEY_UP:
-		case KEY_PPAGE:
-		case 'p':
-			m_cur_dev -= showMultipleDevices() ? height() / 9 : 1;
-			if( m_cur_dev < 0 )
-				m_cur_dev = m_devs.size() - 1;
-			break;
-	}
-	if( showMultipleDevices() && (unsigned int) height() / 9 >= m_devs.size() )
-		m_cur_dev = 0;
-}
+    // print data of the current device(s)
+    if(!showMultipleDevices())
+    {
+        devices[m_curDev]->print(*this);
+    }
+    else
+    {
+        if((unsigned int) getHeight() / 9 >= devices.size())
+            m_curDev = 0;
 
-void TrafficWindow::print()
-{
-	//update all devices and print the data of the current one
-	for( int i = 0; (unsigned int) i < m_devs.size(); i++ )
-	{
-		m_devs[i] -> update();
-		if( ! showMultipleDevices() )
-		{
-			if( i == m_cur_dev )
-				m_devs[i] -> print( *this );
-		}
-		else
-		{
-			if( i >= m_cur_dev && height() - y() >= 9 )
-				m_devs[i] -> print( *this );
-		}
-	}
-}
+        int i = m_curDev;
+        while(getHeight() - getY() >= 9)
+        {
+            devices[i++]->print(*this);
 
-void TrafficWindow::setShowMultipleDevices( OptionBool* new_smd )
-{
-	m_show_multiple_devices = new_smd;
+            if((unsigned int) i >= devices.size())
+                break;
+        }
+    }
 }
 
 bool TrafficWindow::showMultipleDevices()
 {
-	return m_show_multiple_devices ? (bool) *m_show_multiple_devices : ! STANDARD_HIDE_GRAPHS;
+    return SettingStore::get("MultipleDevices");
 }
+

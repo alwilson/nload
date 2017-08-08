@@ -1,8 +1,8 @@
 /***************************************************************************
-                                optionbase.h
+                              devreader-linux.h
                              -------------------
-    begin                : Sun Jan 20 2002
-    copyright            : (C) 2002 - 2003 by Roland Riegel
+    begin                : Fri Nov 16 2007
+    copyright            : (C) 2007 - 2008 by Roland Riegel
     email                : feedback@roland-riegel.de
  ***************************************************************************/
 
@@ -15,36 +15,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef OPTIONBASE_H
-#define OPTIONBASE_H
+#ifndef DEVREADER_LINUX_H
+#define DEVREADER_LINUX_H
 
 #include <string>
-using std::string;
+#include <list>
 
-class Field;
-
-class OptionBase
+class DevReaderLinux
 {
-
-public:
-	OptionBase( string new_description = "" );
-	virtual ~OptionBase();
-	
-	void setDescription( string );
-	string description() const;
-	
-	virtual string asString() const = 0;
-	virtual void assignString( const string new_value ) = 0;
-	
-	virtual Field* editField( int x = -1, int y = -1, int width = -1, int height = -1 ) = 0;
-	
-	Field* labelField( int x = -1, int y = -1, int width = -1, int height = -1 );
-	
-private:
-	
-	string m_description;
-	Field* m_label_field;
-	
+    public:
+        static bool isAvailable();
+        static std::list<std::string> findAllDevices();
 };
 
 #endif
+

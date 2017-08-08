@@ -2,7 +2,7 @@
                               traffic_window.h
                              -------------------
     begin                : Thu Jul 04 2002
-    copyright            : (C) 2002 - 2003 by Roland Riegel
+    copyright            : (C) 2002 - 2008 by Roland Riegel
     email                : feedback@roland-riegel.de
  ***************************************************************************/
 
@@ -19,36 +19,25 @@
 #define TRAFFIC_WINDOW_H
 
 #include "window.h"
-#include <vector>
-using std::vector;
 
-class Dev;
-class OptionBool;
+#include <vector>
+
+class Device;
 
 class TrafficWindow : public Window
 {
-public:
-	
-	TrafficWindow();
-	~TrafficWindow();
-	
-	void processKey( int key );
-	void print();
-	
-	vector<Dev *>& devices();
-	void setDevices( vector<Dev *>& );
-	
-	void setShowMultipleDevices( OptionBool* );
-	
-private:
-	
-	bool showMultipleDevices();
-	
-	vector<Dev *> m_devs;
-	
-	int m_cur_dev;
-	OptionBool* m_show_multiple_devices;
-	
+    public:
+        TrafficWindow();
+        ~TrafficWindow();
+        
+        void processKey(int key);
+        void printTraffic(const std::vector<Device*>& devices);
+        
+    private:
+        bool showMultipleDevices();
+        
+        int m_curDev;
 };
 
 #endif
+

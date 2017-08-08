@@ -2,7 +2,7 @@
                                 opt_window.h
                              -------------------
     begin                : Thu Jan 17 2002
-    copyright            : (C) 2002 - 2003 by Roland Riegel
+    copyright            : (C) 2002 - 2008 by Roland Riegel
     email                : feedback@roland-riegel.de
  ***************************************************************************/
 
@@ -20,38 +20,31 @@
 
 #include "window.h"
 #include "form_field.h"
-#include <vector>
-using std::vector;
 
-class OptionBase;
+#include <map>
+#include <string>
 
 class OptWindow : public Window, public Form::Slots
 {
-public:
-	
-	OptWindow();
-	~OptWindow();
-	
-	void show( int, int, int, int );
-	void hide();
-	
-	void refresh();
-	
-	void processKey( int );
-	void slot_fieldChanged( Field* );
-	
-	vector<OptionBase *>& options();
-	
-private:
-	
-	int page();
-	int countPages();
-	
-	vector<OptionBase *> m_options;
-	
-	SubWindow m_sub_window;
-	Form m_form;
-	
+    public:
+        OptWindow();
+        ~OptWindow();
+        
+        void show(int x, int y, int width, int height);
+        void hide();
+        
+        void refresh();
+        
+        void processKey(int request);
+        void slot_fieldChanged(Field* field);
+        
+    private:
+        SubWindow m_subWindow;
+        Form m_form;
+
+        std::map<Field*, std::string> m_labels;
+        std::map<Field*, std::string> m_fields;
 };
 
 #endif
+
